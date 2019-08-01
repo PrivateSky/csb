@@ -1,11 +1,11 @@
-const utils = require("./../../utils/utils");
+const utils = require("./../utils/utils");
 const fs = require("fs");
-const validator = require("../../utils/validator");
-const HashCage = require('../../utils/HashCage');
-const AsyncDispatcher = require("../../utils/AsyncDispatcher");
-const RootCSB = require('../RootCSB');
-const CSBIdentifier = require('../CSBIdentifier');
-const BackupEngine = require('../BackupEngine');
+const validator = require("../utils/validator");
+const HashCage = require('../utils/HashCage');
+const AsyncDispatcher = require("../utils/AsyncDispatcher");
+const RootCSB = require('../lib/RootCSB');
+const CSBIdentifier = require('../lib/CSBIdentifier');
+const BackupEngine = require('../lib/BackupEngine');
 const path = require('path');
 
 

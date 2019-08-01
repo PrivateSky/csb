@@ -1,8 +1,8 @@
-const flowsUtils = require("./../../utils/flowsUtils");
-const utils = require("./../../utils/utils");
+const flowsUtils = require("./../utils/flowsUtils");
+const utils = require("./../utils/utils");
 const crypto = require("pskcrypto");
-const validator = require("../../utils/validator");
-const CSBIdentifier = require("../CSBIdentifier");
+const validator = require("../utils/validator");
+const CSBIdentifier = require("../lib/CSBIdentifier");
 
 $$.swarm.describe("extractFile", {
 	start: function (url, localFolder = process.cwd()) {

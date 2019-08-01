@@ -1,7 +1,7 @@
-const utils = require("./../../utils/flowsUtils");
-const RootCSB = require("../RootCSB");
-const DseedCage = require("../../utils/DseedCage");
-const CSBIdentifier = require("../CSBIdentifier");
+const utils = require("./../utils/flowsUtils");
+const RootCSB = require("../lib/RootCSB");
+const DseedCage = require("../utils/DseedCage");
+const CSBIdentifier = require("../lib/CSBIdentifier");
 
 $$.swarm.describe("resetPin", {
     start: function (localFolder = process.cwd()) {

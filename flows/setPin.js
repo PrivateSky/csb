@@ -1,5 +1,5 @@
-const validator = require("../../utils/validator");
-const DseedCage = require('../../utils/DseedCage');
+const validator = require("../utils/validator");
+const DseedCage = require('../utils/DseedCage');
 
 $$.swarm.describe("setPin", {
     start: function (localFolder = process.cwd()) {

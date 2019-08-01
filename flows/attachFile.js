@@ -1,12 +1,12 @@
-const flowsUtils = require("./../../utils/flowsUtils");
-const utils = require("./../../utils/utils");
+const flowsUtils = require("./../utils/flowsUtils");
+const utils = require("./../utils/utils");
 const crypto = require("pskcrypto");
 const fs = require("fs");
 const path = require('path');
-const validator = require("../../utils/validator");
-const CSBIdentifier = require("../CSBIdentifier");
-const HashCage = require('../../utils/HashCage');
-const RootCSB = require("../RootCSB");
+const validator = require("../utils/validator");
+const CSBIdentifier = require("../lib/CSBIdentifier");
+const HashCage = require('../utils/HashCage');
+const RootCSB = require("../lib/RootCSB");
 
 $$.swarm.describe("attachFile", { //url: CSB1/CSB2/aliasFile
     start: function (url, filePath, localFolder = process.cwd()) { //csb1:assetType:alias

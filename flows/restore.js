@@ -1,15 +1,15 @@
 const path = require("path");
-const flowsUtils = require("./../../utils/flowsUtils");
-const utils = require("./../../utils/utils");
+const flowsUtils = require("./../utils/flowsUtils");
+const utils = require("./../utils/utils");
 const crypto = require("pskcrypto");
 const fs = require("fs");
-const validator = require("../../utils/validator");
-const DseedCage = require("../../utils/DseedCage");
-const RootCSB = require('../RootCSB');
-const CSBIdentifier = require('../CSBIdentifier');
-const BackupEngine = require('../BackupEngine');
-const HashCage = require('../../utils/HashCage');
-const AsyncDispatcher = require('../../utils/AsyncDispatcher');
+const validator = require("../utils/validator");
+const DseedCage = require("../utils/DseedCage");
+const RootCSB = require('../lib/RootCSB');
+const CSBIdentifier = require('../lib/CSBIdentifier');
+const BackupEngine = require('../lib/BackupEngine');
+const HashCage = require('../utils/HashCage');
+const AsyncDispatcher = require('../utils/AsyncDispatcher');
 
 
 $$.swarm.describe("restore", {

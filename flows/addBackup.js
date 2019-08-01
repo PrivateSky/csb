@@ -1,6 +1,6 @@
-const flowsUtils = require("../../utils/flowsUtils");
-const validator = require("../../utils/validator");
-const DseedCage = require("../../utils/DseedCage");
+const flowsUtils = require("../utils/flowsUtils");
+const validator = require("../utils/validator");
+const DseedCage = require("../utils/DseedCage");
 const fs = require('fs');
 const path = require('path');
 

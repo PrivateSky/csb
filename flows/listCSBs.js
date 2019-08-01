@@ -1,8 +1,8 @@
-const flowsUtils = require("./../../utils/flowsUtils");
-const validator = require("../../utils/validator");
+const flowsUtils = require("./../utils/flowsUtils");
+const validator = require("../utils/validator");
 // const fs = require("fs");
-const RootCSB = require("../RootCSB");
-const CSBIdentifier = require("../CSBIdentifier");
+const RootCSB = require("../lib/RootCSB");
+const CSBIdentifier = require("../lib/CSBIdentifier");
 
 $$.swarm.describe("listCSBs", {
     start: function (CSBPath, localFolder = process.cwd()) {
