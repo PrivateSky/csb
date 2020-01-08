@@ -1,6 +1,13 @@
-module.exports.RawCSB = require('./lib/RawCSB');
-module.exports
-// $$.loadLibrary("csb", require("./flows/index"));
+module.exports = {
+    createEDFS(communicationStrategy) {
+        const EDFS = require("./lib/EDFS");
+        return new EDFS(communicationStrategy);
+    },
+
+    createCommunicationStrategy(strategyName) {
+        return require("./communicationStrategies/communicationStrategiesRegistry").createCommunicationStrategy(strategyName);
+    }
+};
 
 
 
