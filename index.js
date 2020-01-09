@@ -1,11 +1,8 @@
+require("brickTransportStrategies/brickTransportStrategiesRegistry");
 module.exports = {
-    createEDFS(communicationStrategy) {
+    attach(brickTransportStrategyName) {
         const EDFS = require("./lib/EDFS");
-        return new EDFS(communicationStrategy);
-    },
-
-    createCommunicationStrategy(strategyName) {
-        return require("./communicationStrategies/communicationStrategiesRegistry").createCommunicationStrategy(strategyName);
+        return new EDFS(brickTransportStrategyName);
     }
 };
 
