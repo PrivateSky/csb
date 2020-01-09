@@ -16,7 +16,7 @@ function HTTPBrickTransportStrategy(initialConfig) {
     };
 
     this.getLocator = () => {
-
+        return url;
     };
 }
 HTTPBrickTransportStrategy.prototype.HTTP_BRICK_TRANSPORT_STRATEGY = "HTTP_BRICK_TRANSPORT_STRATEGY";
