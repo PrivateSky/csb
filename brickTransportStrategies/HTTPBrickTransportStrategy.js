@@ -4,11 +4,11 @@ function HTTPBrickTransportStrategy(initialConfig) {
     const url = initialConfig;
 
     this.send = (name, data, callback) => {
-        $$.remote.doHttpPost(url + "/EDFS/" + name, data, callback);
+        $$.remote.doHttpPost(url + "/EDFS/alias/" + name, data, callback);
     };
 
     this.get = (name, callback) => {
-        $$.remote.doHttpGet(url + "/EDFS/" + name, callback);
+        $$.remote.doHttpGet(url + "/EDFS/alias/" + name, callback);
     };
 
     this.getHashForAlias = (alias, callback) => {
