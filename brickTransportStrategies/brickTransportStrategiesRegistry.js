@@ -16,6 +16,10 @@ function BrickTransportStrategiesRegistry() {
     this.get = (transportStrategyName) => {
         return strategies[transportStrategyName];
     };
+
+    this.has = (transportStrategyName) => {
+        return strategies.hasOwnProperty(transportStrategyName);
+    }
 }
 
 if (!$$.brickTransportStrategiesRegistry) {
