@@ -5,12 +5,8 @@ module.exports = {
         return new EDFS(brickTransportStrategyName);
     },
 
-    createHTTPBrickTransportStrategy(initialConfig) {
-        const HTTPBrickTransportStrategy = require("./brickTransportStrategies/HTTPBrickTransportStrategy");
-        return new HTTPBrickTransportStrategy(initialConfig);
-    }
+    HTTPBrickTransportStrategy: require("./brickTransportStrategies/HTTPBrickTransportStrategy")
 };
-
 
 
 

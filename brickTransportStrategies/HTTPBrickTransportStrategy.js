@@ -19,6 +19,5 @@ function HTTPBrickTransportStrategy(initialConfig) {
         return url;
     };
 }
-HTTPBrickTransportStrategy.prototype.HTTP_BRICK_TRANSPORT_STRATEGY = "HTTP_BRICK_TRANSPORT_STRATEGY";
 
 module.exports = HTTPBrickTransportStrategy;
