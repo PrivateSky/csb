@@ -1,12 +1,13 @@
 require("./brickTransportStrategies/brickTransportStrategiesRegistry");
-require("./constants");
+const constants = require("./moduleConstants");
 module.exports = {
     attach(brickTransportStrategyName) {
         const EDFS = require("./lib/EDFS");
         return new EDFS(brickTransportStrategyName);
     },
 
-    HTTPBrickTransportStrategy: require("./brickTransportStrategies/HTTPBrickTransportStrategy")
+    HTTPBrickTransportStrategy: require("./brickTransportStrategies/HTTPBrickTransportStrategy"),
+    constants: constants
 };
 
 
