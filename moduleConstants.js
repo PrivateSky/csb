@@ -5,6 +5,7 @@ module.exports = {
     CSB: {
         CONSTITUTION_FOLDER: 'constitution',
         BLOCKCHAIN_FOLDER: 'blockchain',
-        APP_FOLDER: 'app'
+        APP_FOLDER: 'app',
+        DOMAIN_IDENTITY_FILE: 'domain_identity'
     }
 };
