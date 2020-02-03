@@ -1,6 +1,8 @@
 const crypto = require('pskcrypto');
-const path = require('path');
-const fs = require("fs");
+const pathModule = "path"
+const path = require(pathModule);
+const fsModule = "fs";
+const fs = require(fsModule);
 const CSBIdentifier = require("../lib/CSBIdentifier");
 
 function DseedCage(localFolder) {

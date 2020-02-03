@@ -1,5 +1,7 @@
-const path = require('path');
-const fs = require('fs');
+const pathModule = "path";
+const path = require(pathModule);
+const fsModule = "fs";
+const fs = require(fsModule);
 
 function HashCage(localFolder) {
 	const hashFolder = path.join(localFolder, '.privateSky');

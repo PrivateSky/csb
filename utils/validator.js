@@ -1,7 +1,4 @@
 const RootCSB = require("../lib/RootCSB");
-const fs = require("fs");
-const path = require("path");
-
 
 module.exports.validatePin = function (localFolder, swarm, phaseName, pin, noTries, ...args) {
 	RootCSB.createRootCSB(localFolder, undefined, undefined, pin, (err, rootCSB, csbIdentifier, backups) =>{
@@ -31,6 +28,10 @@ module.exports.reportOrContinue = function(swarm, phaseName, errorMessage, ...ar
 };
 
 module.exports.checkMasterCSBExists = function (localFolder, callback) {
+	const pathModule = "path";
+	const path = require(pathModule);
+	const fsModule = "fs";
+	const fs = require(fsModule);
 	fs.stat(path.join(localFolder, ".privateSky/hash"), (err, stats)=>{
 		if(err){
 			return callback(err, false);
