@@ -1,5 +1,6 @@
+require("../../../psknode/bundles/testsRuntime");
 require("../../../psknode/bundles/pskruntime");
-require("../../../psknode/bundles/psknode");
+require("../../../psknode/bundles/edfsBar");
 require("../../../psknode/bundles/consoleTools");
 
 const SeedCage = require("../lib/SeedCage");
