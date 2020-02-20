@@ -12,7 +12,13 @@ function HTTPBrickTransportStrategy(initialConfig) {
     };
 
     this.getHashForAlias = (alias, callback) => {
-        $$.remote.doHttpGet(url + "/EDFS/getVersions/" + alias, (err, hashesList) => callback(err, JSON.parse(hashesList.toString())));
+        $$.remote.doHttpGet(url + "/EDFS/getVersions/" + alias, (err, hashesList) => {
+            if(err) {
+                return callback(err)
+            }
+
+            callback(undefined, JSON.parse(hashesList.toString()))
+        });
     };
 
     this.attachHashToAlias = (alias, name, callback) => {
