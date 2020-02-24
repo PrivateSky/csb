@@ -69,7 +69,7 @@ function putSeed(seed, pin, callback) {
                 return callback(e);
             }
 
-            console.log("To be removed later", seed);
+            console.log("To be removed later", seed.toString());
             fs.writeFile(seedCagePath, encSeed, callback);
         });
     });

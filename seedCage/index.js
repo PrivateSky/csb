@@ -1,3 +1,4 @@
+const or = require("overwrite-require");
 switch ($$.environmentType) {
     case or.constants.THREAD_ENVIRONMENT_TYPE:
     case or.constants.NODEJS_ENVIRONMENT_TYPE:
