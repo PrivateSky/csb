@@ -5,7 +5,7 @@ module.exports = {
         const EDFS = require("./lib/EDFS");
         return new EDFS(brickTransportStrategyName);
     },
-    attachToEndpoint(endpoint){
+    attachToEndpoint(endpoint) {
         //TODO:test endpoint against regex to determine transport strategy type
         //for now http will be used
         const transportStrategy = new this.HTTPBrickTransportStrategy(endpoint);
@@ -13,13 +13,32 @@ module.exports = {
         $$.brickTransportStrategiesRegistry.add(transportStrategyAlias, transportStrategy);
         return this.attach(transportStrategyAlias);
     },
-    attachFromSeed(compactSeed){
+    attachWithSeed(compactSeed) {
         const SEED = require("bar").Seed;
         const seed = new SEED(compactSeed);
         const transportStrategy = new this.HTTPBrickTransportStrategy(seed.getEndpoint());
         const transportStrategyAlias = "seedBasedStrategy";
         $$.brickTransportStrategiesRegistry.add(transportStrategyAlias, transportStrategy);
         return this.attach(transportStrategyAlias);
+    },
+    attachWithPin(pin, callback) {
+        require("./seedCage").getSeed(pin, (err, seed) => {
+            if (err) {
+                return callback(err);
+            }
+
+            let edfs;
+            try {
+                edfs = this.attachWithSeed(seed);
+            } catch (e) {
+                return callback(e);
+            }
+
+            callback(undefined, edfs);
+        });
+    },
+    checkForSeedCage(callback) {
+        require("./seedCage").check(callback);
     },
     HTTPBrickTransportStrategy: require("./brickTransportStrategies/HTTPBrickTransportStrategy"),
     constants: constants
