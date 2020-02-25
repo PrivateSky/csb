@@ -5,6 +5,8 @@ switch ($$.environmentType) {
         module.exports = require("./NodeSeedCage");
         break;
     case or.constants.BROWSER_ENVIRONMENT_TYPE:
+        module.exports = require("./BrowserSeedCage");
+        break;
     case or.constants.SERVICE_WORKER_ENVIRONMENT_TYPE:
     case or.constants.ISOLATE_ENVIRONMENT_TYPE:
     default:

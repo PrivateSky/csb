@@ -40,6 +40,9 @@ module.exports = {
     checkForSeedCage(callback) {
         require("./seedCage").check(callback);
     },
+    storeWalletSeed(walletSeed, pin, callback){
+        require("./seedCage").putSeed(walletSeed, pin, callback);
+    },
     HTTPBrickTransportStrategy: require("./brickTransportStrategies/HTTPBrickTransportStrategy"),
     constants: constants
 };
