@@ -31,7 +31,7 @@ function getSeed(pin, callback) {
     });
 }
 
-function putSeed(seed, pin, callback) {
+function putSeed(seed, pin, overwrite = false, callback) {
     fs.mkdir(storageLocation, {recursive: true}, (err) => {
         if (err) {
             return callback(err);
@@ -39,38 +39,46 @@ function putSeed(seed, pin, callback) {
 
         fs.stat(seedCagePath, (err, stats) => {
             if (!err && stats.size > 0) {
-                return callback(Error("Attempted to overwrite existing SEED."));
+                if (overwrite) {
+                    __encryptSeed();
+                } else {
+                    return callback(Error("Attempted to overwrite existing SEED."));
+                }
+            } else {
+                __encryptSeed();
             }
 
-            let encSeed;
-            try {
-                if (typeof seed === "string") {
-                    seed = Buffer.from(seed);
+            function __encryptSeed() {
+                let encSeed;
+                try {
+                    if (typeof seed === "string") {
+                        seed = Buffer.from(seed);
+                    }
+
+                    if (typeof seed === "object" && !Buffer.isBuffer(seed)) {
+                        seed = Buffer.from(seed);
+                    }
+
+
+                    const pskEncryption = crypto.createPskEncryption(algorithm);
+                    const encKey = crypto.deriveKey(algorithm, pin);
+                    encSeed = pskEncryption.encrypt(seed, encKey);
+                    const encParameters = pskEncryption.getEncryptionParameters();
+                    encSeed = Buffer.concat([encSeed, encParameters.iv]);
+                    if (encParameters.aad) {
+                        encSeed = Buffer.concat([encSeed, encParameters.aad]);
+                    }
+
+                    if (encParameters.tag) {
+                        encSeed = Buffer.concat([encSeed, encParameters.tag]);
+                    }
+                } catch (e) {
+                    return callback(e);
                 }
 
-                if (typeof seed === "object" && !Buffer.isBuffer(seed)) {
-                    seed = Buffer.from(seed);
-                }
-
-
-                const pskEncryption = crypto.createPskEncryption(algorithm);
-                const encKey = crypto.deriveKey(algorithm, pin);
-                encSeed = pskEncryption.encrypt(seed, encKey);
-                const encParameters = pskEncryption.getEncryptionParameters();
-                encSeed = Buffer.concat([encSeed, encParameters.iv]);
-                if (encParameters.aad) {
-                    encSeed = Buffer.concat([encSeed, encParameters.aad]);
-                }
-
-                if (encParameters.tag) {
-                    encSeed = Buffer.concat([encSeed, encParameters.tag]);
-                }
-            } catch (e) {
-                return callback(e);
+                console.log("To be removed later", seed.toString());
+                fs.writeFile(seedCagePath, encSeed, callback);
             }
-
-            console.log("To be removed later", seed.toString());
-            fs.writeFile(seedCagePath, encSeed, callback);
         });
     });
 }

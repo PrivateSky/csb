@@ -20,9 +20,12 @@ function getSeed(pin, callback) {
     callback(undefined, seed);
 }
 
-function putSeed(seed, pin, callback) {
+function putSeed(seed, pin, overwrite = false, callback) {
     let encSeed;
 
+    if (typeof overwrite === "function") {
+        callback(Error("TODO: api signature updated!"));
+    }
     try {
         if (typeof seed === "string") {
             seed = Buffer.from(seed);

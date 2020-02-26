@@ -3,7 +3,7 @@ require("../../../psknode/bundles/pskruntime");
 require("../../../psknode/bundles/edfsBar");
 require("../../../psknode/bundles/consoleTools");
 
-const SeedCage = require("../lib/SeedCage");
+const SeedCage = require("../seedCage/NodeSeedCage");
 const double_check = require("../../double-check");
 const assert = double_check.assert;
 
