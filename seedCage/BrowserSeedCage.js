@@ -30,9 +30,9 @@ function putSeed(seed, pin, overwrite = false, callback) {
         if (typeof seed === "string") {
             seed = Buffer.from(seed);
         }
-        /*if (typeof seed === "object" && !Buffer.isBuffer(seed)) {
+        if (typeof seed === "object" && !Buffer.isBuffer(seed)) {
             seed = Buffer.from(seed);
-        }*/
+        }
 
         const pskEncryption = crypto.createPskEncryption(algorithm);
         const encKey = crypto.deriveKey(algorithm, pin);
