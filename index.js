@@ -9,7 +9,8 @@ module.exports = {
         //TODO:test endpoint against regex to determine transport strategy type
         //for now http will be used
         const transportStrategy = new this.HTTPBrickTransportStrategy(endpoint);
-        const transportStrategyAlias = "seedBasedStrategy";
+        const randomPart = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 5);
+        const transportStrategyAlias = "seedBasedStrategy_"+randomPart;
         $$.brickTransportStrategiesRegistry.add(transportStrategyAlias, transportStrategy);
         return this.attach(transportStrategyAlias);
     },
