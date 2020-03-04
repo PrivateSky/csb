@@ -1,5 +1,10 @@
 require("./brickTransportStrategies/brickTransportStrategiesRegistry");
 const constants = require("./moduleConstants");
+
+function generateUniqueStrategyName(prefix) {
+    const randomPart = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 5);
+    return prefix + "_" + randomPart;
+}
 module.exports = {
     attach(brickTransportStrategyName) {
         const EDFS = require("./lib/EDFS");
@@ -9,8 +14,7 @@ module.exports = {
         //TODO:test endpoint against regex to determine transport strategy type
         //for now http will be used
         const transportStrategy = new this.HTTPBrickTransportStrategy(endpoint);
-        const randomPart = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 5);
-        const transportStrategyAlias = "seedBasedStrategy_"+randomPart;
+        const transportStrategyAlias = generateUniqueStrategyName("endpointBasedStrategy");
         $$.brickTransportStrategiesRegistry.add(transportStrategyAlias, transportStrategy);
         return this.attach(transportStrategyAlias);
     },
@@ -18,7 +22,7 @@ module.exports = {
         const SEED = require("bar").Seed;
         const seed = new SEED(compactSeed);
         const transportStrategy = new this.HTTPBrickTransportStrategy(seed.getEndpoint());
-        const transportStrategyAlias = "seedBasedStrategy";
+        const transportStrategyAlias = generateUniqueStrategyName("seedBasedStrategy");
         $$.brickTransportStrategiesRegistry.add(transportStrategyAlias, transportStrategy);
         return this.attach(transportStrategyAlias);
     },
