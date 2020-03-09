@@ -7,9 +7,10 @@ module.exports = {
         BLOCKCHAIN_FOLDER: 'blockchain',
         APP_FOLDER: 'app',
         DOMAIN_IDENTITY_FILE: 'domain_identity',
-        ASSETS: "assets",
-        TRANSACTIONS: "transactions",
-        APPS: "apps",
-        DATA: "data"
+        ASSETS_FOLDER: "assets",
+        TRANSACTIONS_FOLDER: "transactions",
+        APPS_FOLDER: "apps",
+        DATA_FOLDER: "data",
+        MANIFEST_FILE: "manifest"
     }
 };
