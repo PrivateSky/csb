@@ -6,6 +6,10 @@ module.exports = {
         CONSTITUTION_FOLDER: 'constitution',
         BLOCKCHAIN_FOLDER: 'blockchain',
         APP_FOLDER: 'app',
-        DOMAIN_IDENTITY_FILE: 'domain_identity'
+        DOMAIN_IDENTITY_FILE: 'domain_identity',
+        ASSETS: "assets",
+        TRANSACTIONS: "transactions",
+        APPS: "apps",
+        DATA: "data"
     }
 };
