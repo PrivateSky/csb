@@ -10,13 +10,8 @@ const fileName = "testFile";
 const fileContent = "lorem ipsum";
 
 function getTemplateDossierSeed(callback) {
-    edfs.createCSB((err, dossierHandler) => {
-        if (err) {
-            return callback(err);
-        }
-
-        dossierHandler.writeFile(constants.CONSTITUTION_FOLDER + "/" + fileName, fileContent, (err => callback(err, dossierHandler.getSeed())));
-    });
+    const dossierHandler = edfs.createCSB();
+    dossierHandler.writeFile(constants.CONSTITUTION_FOLDER + "/" + fileName, fileContent, (err => callback(err, dossierHandler.getSeed())));
 }
 
 assert.callback("Create wallet with manifest implementation", (finishTest) => {
@@ -37,22 +32,46 @@ assert.callback("Create wallet with manifest implementation", (finishTest) => {
                     throw err;
                 }
 
-                edfs.createWallet(seed, undefined, undefined, (err, walletHandler) => {
+                edfs.createWallet(seed, undefined, false, (err, walletSeed) => {
+                    if (err) {
+                        throw err;
+                    }
 
-                    walletHandler.readFile(constants.MANIFEST_FILE, (err, manifestContent) => {
-                        assert.isNull(err);
-                        const manifest = JSON.parse(manifestContent.toString());
-                        assert.true(manifest.mounts.length !== 0);
+                    edfs.loadWallet(walletSeed, undefined, false, (err, walletHandler) => {
+                        if (err) {
+                            throw err;
+                        }
 
-                        walletHandler.readFile("/" + constants.CONSTITUTION_FOLDER + "/" + fileName, (err, content) => {
-                            assert.isNull(err);
-                            assert.true(content.toString() === fileContent);
 
-                            finishTest();
+                        walletHandler.readFile(constants.MANIFEST_FILE, (err, manifestContent) => {
+                            console.log("manifest content", manifestContent.toString());
+                            if (err) {
+                                throw err;
+                            }
+                            // assert.isNull(err);
+                            const manifest = JSON.parse(manifestContent.toString());
+                            assert.true(manifest.mounts.length !== 0);
+                            walletHandler.listFiles("/constitution", (err, files) => {
+                                if (err) {
+                                    throw err;
+                                }
+
+                                console.log("files", files);
+                                walletHandler.readFile(constants.CONSTITUTION_FOLDER + "/" + fileName, (err, content) => {
+                                    if (err) {
+                                        throw err;
+                                    }
+                                    assert.isNull(err);
+                                    assert.true(content.toString() === fileContent);
+
+                                    finishTest();
+                                });
+                            });
                         });
+
                     })
-                })
+                });
             });
         });
-    });
+    })
 }, 1500);
