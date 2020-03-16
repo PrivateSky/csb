@@ -11,7 +11,7 @@ function createDossier(fileName, fileContent, callback) {
     dossierHandler.writeFile(constants.CONSTITUTION_FOLDER + "/" + fileName, fileContent, (err => callback(err, dossierHandler)));
 }
 
-assert.callback("Mount - list files - unmount", (finishTest) => {
+assert.callback("Test load bar for path", (finishTest) => {
     dc.createTestFolder("mount", (err, folder) => {
         if (err) {
             throw err;
@@ -29,7 +29,7 @@ assert.callback("Mount - list files - unmount", (finishTest) => {
                     throw err;
                 }
 
-                createDossier("testFile2", "Hahaha",(err, testDossier) => {
+                createDossier("testFile2", "Hahaha", (err, testDossier) => {
                     if (err) {
                         throw err;
                     }
@@ -38,27 +38,21 @@ assert.callback("Mount - list files - unmount", (finishTest) => {
                         if (err) {
                             throw err;
                         }
-
-                        testDossier.readFile(constants.MANIFEST_FILE, (err, data) => {
+                        
+                        testDossier.loadBarForPath("constitution/testFile1", (err, dossierContext) => {
                             if (err) {
                                 throw err;
                             }
 
-                            testDossier.getRawDossier(testDossier, "constitution/testFile1", (err, dossierContext) => {
+                            dossierContext.rawDossier.listFiles(dossierContext.relativePath, (err, files) => {
+
                                 if (err) {
                                     throw err;
                                 }
 
-                                dossierContext.rawDossier.listFiles(dossierContext.path, (err, files) => {
+                                assert.true(files[0] === "/constitution/testFile1");
+                                finishTest();
 
-                                    if (err) {
-                                        throw err;
-                                    }
-
-                                    assert.true(files[0] === "constitution/testFile1");
-                                    finishTest();
-
-                                });
                             });
                         });
                     });
@@ -66,4 +60,4 @@ assert.callback("Mount - list files - unmount", (finishTest) => {
             });
         });
     });
-}, 1500);
+}, 3000);

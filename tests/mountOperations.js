@@ -10,13 +10,8 @@ const fileName = "testFile";
 const fileContent = "lorem ipsum";
 
 function createDossier(callback) {
-    edfs.createCSB((err, dossierHandler) => {
-        if (err) {
-            return callback(err);
-        }
-
-        dossierHandler.writeFile(constants.CONSTITUTION_FOLDER + "/" + fileName, fileContent, (err => callback(err, dossierHandler)));
-    });
+    const dossierHandler = edfs.createCSB();
+    dossierHandler.writeFile(constants.CONSTITUTION_FOLDER + "/" + fileName, fileContent, (err => callback(err, dossierHandler)));
 }
 
 assert.callback("Mount - list files - unmount", (finishTest) => {
@@ -48,20 +43,28 @@ assert.callback("Mount - list files - unmount", (finishTest) => {
                         }
 
                         testDossier.readFile(constants.MANIFEST_FILE, (err, manifestContent) => {
-                            assert.isNull(err);
+                            if (err) {
+                                throw err;
+                            }
                             const manifest = JSON.parse(manifestContent.toString());
                             assert.true(manifest.mounts.length !== 0);
 
                             testDossier.listFiles(constants.CONSTITUTION_FOLDER, (err, files) => {
-                                assert.isNull(err);
+                                if (err) {
+                                    throw err;
+                                }
                                 assert.true(files.length === 1);
-                                assert.true(files[0] === constants.CONSTITUTION_FOLDER + "/" + fileName);
+                                assert.true(files[0] === constants.CONSTITUTION_FOLDER + "/" + fileName, "Unexpected file list");
 
                                 testDossier.unmount("/", constants.CONSTITUTION_FOLDER, (err) => {
-                                    assert.isNull(err);
+                                    if (err) {
+                                        throw err;
+                                    }
                                     testDossier.readFile(constants.MANIFEST_FILE, (err, manifestdata) => {
-                                        assert.isNull(err);
-                                        const manifest = JSON.parse(manifestdata);
+                                        if (err) {
+                                            throw err;
+                                        }
+                                        const manifest = JSON.parse(manifestdata.toString());
                                         assert.true(manifest.mounts.length === 0);
 
                                         finishTest();
