@@ -44,28 +44,20 @@ assert.callback("Create wallet with manifest implementation", (finishTest) => {
 
 
                         walletHandler.readFile(constants.MANIFEST_FILE, (err, manifestContent) => {
-                            console.log("manifest content", manifestContent.toString());
                             if (err) {
                                 throw err;
                             }
-                            // assert.isNull(err);
                             const manifest = JSON.parse(manifestContent.toString());
                             assert.true(manifest.mounts.length !== 0);
-                            walletHandler.listFiles("/constitution", (err, files) => {
+
+                            walletHandler.readFile("/" + constants.CONSTITUTION_FOLDER + "/" + fileName, (err, content) => {
                                 if (err) {
                                     throw err;
                                 }
 
-                                console.log("files", files);
-                                walletHandler.readFile(constants.CONSTITUTION_FOLDER + "/" + fileName, (err, content) => {
-                                    if (err) {
-                                        throw err;
-                                    }
-                                    assert.isNull(err);
-                                    assert.true(content.toString() === fileContent);
+                                assert.true(content.toString() === fileContent);
 
-                                    finishTest();
-                                });
+                                finishTest();
                             });
                         });
 
@@ -74,4 +66,4 @@ assert.callback("Create wallet with manifest implementation", (finishTest) => {
             });
         });
     })
-}, 1500);
+}, 5000);
