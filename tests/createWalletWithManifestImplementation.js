@@ -11,7 +11,7 @@ const fileContent = "lorem ipsum";
 
 function getTemplateDossierSeed(callback) {
     const dossierHandler = edfs.createCSB();
-    dossierHandler.writeFile(constants.CONSTITUTION_FOLDER + "/" + fileName, fileContent, (err => callback(err, dossierHandler.getSeed())));
+    dossierHandler.writeFile(constants.CONSTITUTION_FOLDER + "/" + fileName, fileContent, 0, (err => callback(err, dossierHandler.getSeed())));
 }
 
 assert.callback("Create wallet with manifest implementation", (finishTest) => {
@@ -42,7 +42,6 @@ assert.callback("Create wallet with manifest implementation", (finishTest) => {
                             throw err;
                         }
 
-
                         walletHandler.readFile(constants.MANIFEST_FILE, (err, manifestContent) => {
                             if (err) {
                                 throw err;
@@ -60,7 +59,6 @@ assert.callback("Create wallet with manifest implementation", (finishTest) => {
                                 finishTest();
                             });
                         });
-
                     })
                 });
             });

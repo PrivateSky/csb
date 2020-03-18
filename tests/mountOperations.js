@@ -11,7 +11,7 @@ const fileContent = "lorem ipsum";
 
 function createDossier(callback) {
     const dossierHandler = edfs.createCSB();
-    dossierHandler.writeFile(constants.CONSTITUTION_FOLDER + "/" + fileName, fileContent, (err => callback(err, dossierHandler)));
+    dossierHandler.writeFile(constants.CONSTITUTION_FOLDER + "/" + fileName, fileContent, 0, (err => callback(err, dossierHandler)));
 }
 
 assert.callback("Mount - list files - unmount", (finishTest) => {
