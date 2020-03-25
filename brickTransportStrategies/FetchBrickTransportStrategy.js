@@ -73,6 +73,9 @@ function FetchBrickTransportStrategy(initialConfig) {
 }
 //TODO:why we use this?
 FetchBrickTransportStrategy.prototype.FETCH_BRICK_TRANSPORT_STRATEGY = "FETCH_BRICK_TRANSPORT_STRATEGY";
+FetchBrickTransportStrategy.prototype.canHandleEndpoint = (endpoint) => {
+    return endpoint.indexOf("http:") === 0 || endpoint.indexOf("https:") === 0;
+};
 
 
 module.exports = FetchBrickTransportStrategy;
