@@ -3,7 +3,7 @@ function FetchBrickTransportStrategy(initialConfig) {
     const url = initialConfig;
     this.send = (name, data, callback) => {
 
-        fetch(url + "/EDFS/", {
+        fetch(url + "/EDFS/"+name, {
             method: 'POST',
             mode: 'cors',
             headers: {
@@ -14,7 +14,10 @@ function FetchBrickTransportStrategy(initialConfig) {
             if(response.status>=400){
                 return callback(new Error(`An error occurred ${response.statusText}`))
             }
-            return response.json();
+            return response.json().catch((err) => {
+                // This happens when the response is empty
+                return {};
+            });
         }).then(function(data) {
             callback(null, data)
         }).catch(error=>{
