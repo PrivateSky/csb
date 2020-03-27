@@ -70,6 +70,29 @@ function FetchBrickTransportStrategy(initialConfig) {
         });
     };
 
+    this.attachHashToAlias = (alias, name, callback) => {
+        fetch(url + '/EDFS/attachHashToAlias/' + name, {
+            method: 'POST',
+            mode: 'cors',
+            headers: {
+                'Content-Type': 'application/octet-stream'
+            },
+            body: alias
+        }).then(response => {
+            if(response.status>=400){
+                return callback(new Error(`An error occurred ${response.statusText}`))
+            }
+            return response.json().catch((err) => {
+                // This happens when the response is empty
+                return {};
+            });
+        }).then(data => {
+            callback(null, data);
+        }).catch(error => {
+            callback(error);
+        })
+    }
+
     this.getLocator = () => {
         return url;
     };
