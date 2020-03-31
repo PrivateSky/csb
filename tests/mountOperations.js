@@ -10,7 +10,7 @@ const fileName = "testFile";
 const fileContent = "lorem ipsum";
 
 function createDossier(callback) {
-    const dossierHandler = edfs.createCSB();
+    const dossierHandler = edfs.createRawDossier();
     dossierHandler.writeFile(constants.CONSTITUTION_FOLDER + "/" + fileName, fileContent, 0, (err => callback(err, dossierHandler)));
 }
 
