@@ -3,6 +3,7 @@ HTTPBrickTransportStrategy.prototype.HTTP_BRICK_TRANSPORT_STRATEGY = "HTTP_BRICK
 
 module.exports = {
     CSB: {
+        CODE_FOLDER: "code",
         CONSTITUTION_FOLDER: 'constitution',
         BLOCKCHAIN_FOLDER: 'blockchain',
         APP_FOLDER: 'app',
