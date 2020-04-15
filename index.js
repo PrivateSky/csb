@@ -3,8 +3,11 @@ const constants = require("./moduleConstants");
 
 const or = require("overwrite-require");
 const browserContexts = [or.constants.SERVICE_WORKER_ENVIRONMENT_TYPE];
+let cache;
+
 if (browserContexts.indexOf($$.environmentType) !== -1) {
     $$.brickTransportStrategiesRegistry.add("http", require("./brickTransportStrategies/FetchBrickTransportStrategy"));
+    cache = require('psk-cache').factory();
 } else {
     $$.brickTransportStrategiesRegistry.add("http", require("./brickTransportStrategies/HTTPBrickTransportStrategy"));
 }
@@ -12,7 +15,9 @@ if (browserContexts.indexOf($$.environmentType) !== -1) {
 module.exports = {
     attachToEndpoint(endpoint) {
         const EDFS = require("./lib/EDFS");
-        return new EDFS(endpoint);
+        return new EDFS(endpoint, {
+            cache
+        });
     },
     attachWithSeed(compactSeed, callback) {
         const SEED = require("bar").Seed;
