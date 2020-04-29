@@ -3,11 +3,10 @@ const constants = require("./moduleConstants");
 
 const or = require("overwrite-require");
 const browserContexts = [or.constants.SERVICE_WORKER_ENVIRONMENT_TYPE];
-let cache;
+const cache = require('psk-cache').factory();
 
 if (browserContexts.indexOf($$.environmentType) !== -1) {
     $$.brickTransportStrategiesRegistry.add("http", require("./brickTransportStrategies/FetchBrickTransportStrategy"));
-    cache = require('psk-cache').factory();
 } else {
     $$.brickTransportStrategiesRegistry.add("http", require("./brickTransportStrategies/HTTPBrickTransportStrategy"));
 }
