@@ -12,7 +12,7 @@ const storageFileName = ".seedCage";
 const seedCagePath = path.join(storageLocation, storageFileName);
 const algorithm = "aes-256-cfb";
 
-function getSeed(pin, callback) {
+function getSeed(password, callback) {
     fs.readFile(seedCagePath, (err, encryptedSeed) => {
         if (err) {
             return callback(err);
@@ -21,7 +21,7 @@ function getSeed(pin, callback) {
         let seed;
         try {
             const pskEncryption = crypto.createPskEncryption(algorithm);
-            const encKey = crypto.deriveKey(algorithm, pin);
+            const encKey = crypto.deriveKey(algorithm, password);
             seed = pskEncryption.decrypt(encryptedSeed, encKey).toString();
         } catch (e) {
             return callback(e);
@@ -31,7 +31,7 @@ function getSeed(pin, callback) {
     });
 }
 
-function putSeed(seed, pin, overwrite = false, callback) {
+function putSeed(seed, password, overwrite = false, callback) {
     fs.mkdir(storageLocation, {recursive: true}, (err) => {
         if (err) {
             return callback(err);
@@ -61,7 +61,7 @@ function putSeed(seed, pin, overwrite = false, callback) {
 
 
                     const pskEncryption = crypto.createPskEncryption(algorithm);
-                    const encKey = crypto.deriveKey(algorithm, pin);
+                    const encKey = crypto.deriveKey(algorithm, password);
                     encSeed = pskEncryption.encrypt(seed, encKey);
                     const encParameters = pskEncryption.getEncryptionParameters();
                     encSeed = Buffer.concat([encSeed, encParameters.iv]);

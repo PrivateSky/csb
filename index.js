@@ -29,8 +29,8 @@ module.exports = {
 
         callback(undefined, this.attachToEndpoint(seed.getEndpoint()));
     },
-    attachWithPin(pin, callback) {
-        require("./seedCage").getSeed(pin, (err, seed) => {
+    attachWithPassword(password, callback) {
+        require("./seedCage").getSeed(password, (err, seed) => {
             if (err) {
                 return callback(err);
             }
