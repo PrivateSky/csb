@@ -44,12 +44,17 @@ assert.callback("readDir test", (finishTest) => {
                                 throw err;
                             }
 
-                            testDossier.readDir("/", (err, folders) => {
+                            testDossier.readDir("/", {withFileTypes: true}, (err, folderObj) => {
                                 if (err) {
                                     throw err;
                                 }
 
-                                assert.arraysMatch(folders.sort(), ['code', 'dir1', 'folder']);
+                                let names = [];
+                                Object.values(folderObj).forEach(entryList => {
+                                    names = names.concat(entryList)
+                                });
+
+                                assert.arraysMatch(names.sort(), ['code', 'dir1', 'folder', 'manifest']);
                                 finishTest();
                             });
                         });
