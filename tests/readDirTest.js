@@ -55,7 +55,35 @@ assert.callback("readDir test", (finishTest) => {
                                 });
 
                                 assert.arraysMatch(names.sort(), ['code', 'dir1', 'folder', 'manifest']);
-                                finishTest();
+
+
+								testDossier.readDir("/folder", {withFileTypes: true}, (err, folderObj) => {
+									if (err) {
+										throw err;
+									}
+
+									let names = [];
+									Object.values(folderObj).forEach(entryList => {
+										names = names.concat(entryList)
+									});
+									assert.arraysMatch(names.sort(), ['brickTransportStrategiesRegistry.js','FetchBrickTransportStrategy.js','HTTPBrickTransportStrategy.js']);
+
+
+									testDossier.readDir("/dir1", {withFileTypes: true}, (err, folderObj) => {
+										if (err) {
+											throw err;
+										}
+
+										let names = [];
+										Object.values(folderObj).forEach(entryList => {
+											names = names.concat(entryList)
+										});
+										assert.arraysMatch(names.sort(), ['dir2']);
+										finishTest();
+									});
+
+								});
+
                             });
                         });
                     });
