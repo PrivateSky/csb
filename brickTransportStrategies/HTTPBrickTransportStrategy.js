@@ -3,7 +3,16 @@ function HTTPBrickTransportStrategy(endpoint) {
     require("psk-http-client");
 
     this.send = (name, data, callback) => {
-        $$.remote.doHttpPost(endpoint + "/EDFS/" + name, data, callback);
+        $$.remote.doHttpPost(endpoint + "/EDFS/" + name, data, (err, brickDigest) => {
+            if (err) {
+                return callback(err);
+            }
+
+            try {
+                brickDigest = JSON.parse(brickDigest);
+            } catch (e) {}
+            callback(undefined, brickDigest);
+        });
     };
 
     this.get = (name, callback) => {
