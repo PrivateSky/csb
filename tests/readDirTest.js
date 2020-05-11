@@ -8,7 +8,12 @@ let edfs;
 
 function createDossier(fileName, fileContent, callback) {
     const dossierHandler = edfs.createRawDossier();
-    dossierHandler.writeFile("/" + constants.CODE_FOLDER + "/" + constants.CONSTITUTION_FOLDER + "/" + fileName, fileContent, (err => callback(err, dossierHandler)));
+    dossierHandler.load((err) => {
+        if (err) {
+            return callback(err);
+        }
+        dossierHandler.writeFile("/" + constants.CODE_FOLDER + "/" + constants.CONSTITUTION_FOLDER + "/" + fileName, fileContent, (err => callback(err, dossierHandler)));
+    });
 }
 
 assert.callback("readDir test", (finishTest) => {
