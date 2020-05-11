@@ -8,7 +8,7 @@ let edfs;
 
 function createDossier(fileName, fileContent, callback) {
     const dossierHandler = edfs.createRawDossier();
-    dossierHandler.writeFile("/"+constants.CODE_FOLDER+"/" +constants.CONSTITUTION_FOLDER + "/" + fileName, fileContent, (err => callback(err, dossierHandler)));
+    dossierHandler.writeFile("/" + constants.CODE_FOLDER + "/" + constants.CONSTITUTION_FOLDER + "/" + fileName, fileContent, (err => callback(err, dossierHandler)));
 }
 
 assert.callback("readDir test", (finishTest) => {
@@ -34,7 +34,7 @@ assert.callback("readDir test", (finishTest) => {
                         throw err;
                     }
 
-                    testDossier.mount("/dir1", "dir2", DossierToMount.getSeed(), (err) => {
+                    testDossier.mount("/dir1/dir2", DossierToMount.getSeed(), (err) => {
                         if (err) {
                             throw err;
                         }
@@ -44,47 +44,52 @@ assert.callback("readDir test", (finishTest) => {
                                 throw err;
                             }
 
-                            testDossier.readDir("/", {withFileTypes: true}, (err, folderObj) => {
+                            testDossier.writeFile("/dir1/file", "some content", (err) => {
                                 if (err) {
                                     throw err;
                                 }
 
-                                let names = [];
-                                Object.values(folderObj).forEach(entryList => {
-                                    names = names.concat(entryList)
+                                testDossier.readDir("/", {withFileTypes: true}, (err, folderObj) => {
+                                    if (err) {
+                                        throw err;
+                                    }
+
+                                    let names = [];
+                                    Object.values(folderObj).forEach(entryList => {
+                                        names = names.concat(entryList)
+                                    });
+
+                                    assert.arraysMatch(names.sort(), ['code', 'dir1', 'folder', 'manifest']);
+                                    assert.true(folderObj.folders.indexOf("dir1") !== -1 && folderObj.mounts.indexOf("dir1") === -1)
+
+                                    testDossier.readDir("/folder", {withFileTypes: true}, (err, folderObj) => {
+                                        if (err) {
+                                            throw err;
+                                        }
+
+                                        let names = folderObj.files;
+
+                                        assert.arraysMatch(names.sort(), ['brickTransportStrategiesRegistry.js', 'FetchBrickTransportStrategy.js', 'HTTPBrickTransportStrategy.js']);
+
+                                        testDossier.readDir("/dir1", {withFileTypes: true}, (err, folderObj) => {
+                                            if (err) {
+                                                throw err;
+                                            }
+
+                                            let names = [];
+                                            Object.values(folderObj).forEach(entryList => {
+                                                names = names.concat(entryList)
+                                            });
+
+                                            assert.arraysMatch(names.sort(), ['dir2', "file"]);
+                                            finishTest();
+                                        });
+
+                                    });
+
                                 });
-
-                                assert.arraysMatch(names.sort(), ['code', 'dir1', 'folder', 'manifest']);
-
-
-								testDossier.readDir("/folder", {withFileTypes: true}, (err, folderObj) => {
-									if (err) {
-										throw err;
-									}
-
-									let names = [];
-									Object.values(folderObj).forEach(entryList => {
-										names = names.concat(entryList)
-									});
-									assert.arraysMatch(names.sort(), ['brickTransportStrategiesRegistry.js','FetchBrickTransportStrategy.js','HTTPBrickTransportStrategy.js']);
-
-
-									testDossier.readDir("/dir1", {withFileTypes: true}, (err, folderObj) => {
-										if (err) {
-											throw err;
-										}
-
-										let names = [];
-										Object.values(folderObj).forEach(entryList => {
-											names = names.concat(entryList)
-										});
-										assert.arraysMatch(names.sort(), ['dir2']);
-										finishTest();
-									});
-
-								});
-
                             });
+
                         });
                     });
                 })
