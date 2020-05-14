@@ -10,8 +10,12 @@ const fileName = "testFile";
 const fileContent = "lorem ipsum";
 
 function createDossier(callback) {
-    const dossierHandler = edfs.createRawDossier();
-    dossierHandler.writeFile(constants.CONSTITUTION_FOLDER + "/" + fileName, fileContent, 0, (err => callback(err, dossierHandler)));
+    edfs.createRawDossier((err, dossierHandler) => {
+        if (err) {
+            return callback(err);
+        }
+        dossierHandler.writeFile(constants.CONSTITUTION_FOLDER + "/" + fileName, fileContent, 0, (err => callback(err, dossierHandler)));
+    });
 }
 
 assert.callback("Mount - list files - unmount", (finishTest) => {

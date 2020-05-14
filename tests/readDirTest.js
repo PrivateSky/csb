@@ -7,8 +7,7 @@ const constants = require("../moduleConstants").CSB;
 let edfs;
 
 function createDossier(fileName, fileContent, callback) {
-    const dossierHandler = edfs.createRawDossier();
-    dossierHandler.load((err) => {
+    edfs.createRawDossier((err, dossierHandler) => {
         if (err) {
             return callback(err);
         }
@@ -65,7 +64,7 @@ assert.callback("readDir test", (finishTest) => {
                                     });
 
                                     assert.arraysMatch(names.sort(), ['code', 'dir1', 'folder', 'manifest']);
-                                    assert.true(folderObj.folders.indexOf("dir1") !== -1 && folderObj.mounts.indexOf("dir1") === -1)
+                                    assert.true(folderObj.folders.indexOf("dir1") !== -1 && folderObj.mounts.indexOf("dir1") === -1);
 
                                     testDossier.readDir("/folder", {withFileTypes: true}, (err, folderObj) => {
                                         if (err) {
