@@ -1,4 +1,3 @@
-
 function HTTPBrickTransportStrategy(endpoint) {
     require("psk-http-client");
 
@@ -10,7 +9,8 @@ function HTTPBrickTransportStrategy(endpoint) {
 
             try {
                 brickDigest = JSON.parse(brickDigest);
-            } catch (e) {}
+            } catch (e) {
+            }
             callback(undefined, brickDigest);
         });
     };
@@ -20,8 +20,8 @@ function HTTPBrickTransportStrategy(endpoint) {
     };
 
     this.getHashForAlias = (alias, callback) => {
-        $$.remote.doHttpGet(endpoint + "/EDFS/getVersions/" + alias, (err, hashesList) => {
-            if(err) {
+        $$.remote.doHttpGet(endpoint + "/anchoring/getVersions/" + alias, (err, hashesList) => {
+            if (err) {
                 return callback(err)
             }
 
@@ -30,7 +30,7 @@ function HTTPBrickTransportStrategy(endpoint) {
     };
 
     this.attachHashToAlias = (alias, name, callback) => {
-        $$.remote.doHttpPost(endpoint + "/EDFS/attachHashToAlias/" + name, alias, callback);
+        $$.remote.doHttpPost(endpoint + "/anchoring/attachHashToAlias/" + name, alias, callback);
     };
 
     this.getLocator = () => {
