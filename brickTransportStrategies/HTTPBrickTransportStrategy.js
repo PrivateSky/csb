@@ -10,6 +10,7 @@ function HTTPBrickTransportStrategy(endpoint) {
             try {
                 brickDigest = JSON.parse(brickDigest);
             } catch (e) {
+                return callback(e);
             }
             callback(undefined, brickDigest);
         });
@@ -17,6 +18,14 @@ function HTTPBrickTransportStrategy(endpoint) {
 
     this.get = (name, callback) => {
         $$.remote.doHttpGet(endpoint + "/EDFS/" + name, callback);
+    };
+
+    this.getMultipleBricks = (brickHashes, callback) => {
+        let query = "?";
+        brickHashes.forEach(brickHash => {
+            query += "hashes=" + brickHash + "&";
+        });
+        $$.remote.doHttpGet(endpoint + "/EDFS/downloadMultipleBricks" + query, callback);
     };
 
     this.getHashForAlias = (alias, callback) => {
