@@ -69,8 +69,17 @@ function FetchBrickTransportStrategy(initialConfig) {
         });
     };
 
-    this.attachHashToAlias = (alias, name, callback) => {
-        fetch(url + '/anchoring/attachHashToAlias/' + name, {
+    this.attachHashToAlias = (alias, name, lastName, callback) => {
+        let anchoringUrl = `${url}/anchoring/attachHashToAlias/${name}`;
+        if (typeof lastName === 'function') {
+            callback = lastName;
+            lastName = undefined;
+        }
+
+        if (lastName !== undefined) {
+            anchoringUrl = `${anchoringUrl}/${lastName}`;
+        }
+        fetch(anchoringUrl, {
             method: 'POST',
             mode: 'cors',
             headers: {

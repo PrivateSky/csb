@@ -38,8 +38,17 @@ function HTTPBrickTransportStrategy(endpoint) {
         });
     };
 
-    this.attachHashToAlias = (alias, name, callback) => {
-        $$.remote.doHttpPost(endpoint + "/anchoring/attachHashToAlias/" + name, alias, callback);
+    this.attachHashToAlias = (alias, name, lastName, callback) => {
+        let anchoringUrl = `${endpoint}/anchoring/attachHashToAlias/${name}`;
+        if (typeof lastName === 'function') {
+            callback = lastName;
+            lastName = undefined;
+        }
+
+        if (lastName !== undefined) {
+            anchoringUrl = `${anchoringUrl}/${lastName}`;
+        }
+        $$.remote.doHttpPost(anchoringUrl, alias, callback);
     };
 
     this.getLocator = () => {
