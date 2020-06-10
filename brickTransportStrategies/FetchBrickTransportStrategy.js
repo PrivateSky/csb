@@ -50,6 +50,35 @@ function FetchBrickTransportStrategy(initialConfig) {
         });
     };
 
+    this.getMultipleBricks = (brickHashes, callback) => {
+        let query = '?';
+        brickHashes.forEach(brickHash => {
+            query += "hashes=" + brickHash + "&";
+        });
+        fetch(url + "/EDFS/downloadMultipleBricks" + query, {
+            method: 'GET',
+            mode: 'cors',
+            headers: {
+                'Content-Type': 'application/octet-stream'
+            },
+        }).then(response => {
+            if (response.status >= 400) {
+                throw new Error(`An error occurred ${response.statusText}`);
+            }
+            return response.arrayBuffer();
+        }).then(arrayBuffer => {
+            let buffer = new Buffer(arrayBuffer.byteLength);
+            let view = new Uint8Array(arrayBuffer);
+            for (let i = 0; i < buffer.length; ++i) {
+                buffer[i] = view[i];
+            }
+
+            callback(null, buffer);
+        }).catch(error => {
+            callback(error);
+        });
+    };
+
     this.getHashForAlias = (alias, callback) => {
         fetch(url + "/anchoring/getVersions/" + alias, {
             method: 'GET',
