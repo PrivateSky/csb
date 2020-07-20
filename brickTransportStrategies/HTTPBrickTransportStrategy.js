@@ -20,12 +20,47 @@ function HTTPBrickTransportStrategy(endpoint) {
         $$.remote.doHttpGet(endpoint + "/EDFS/" + name, callback);
     };
 
+    const parallelBricksCounter = 50;
     this.getMultipleBricks = (brickHashes, callback) => {
-        let query = "?";
-        brickHashes.forEach(brickHash => {
-            query += "hashes=" + brickHash + "&";
-        });
-        $$.remote.doHttpGet(endpoint + "/EDFS/downloadMultipleBricks" + query, callback);
+        //console.log("Bricks counter to be requested", brickHashes.length);
+
+        let counter = 0;
+        let queries = [];
+        while(counter*parallelBricksCounter < brickHashes.length){
+            let hashes = brickHashes.slice(counter*parallelBricksCounter, counter*parallelBricksCounter+parallelBricksCounter);
+            //console.log("hashes", hashes);
+            let q = "?" ;
+
+            hashes.forEach(brickHash => {
+                q += "hashes=" + brickHash + "&";
+            });
+
+            queries.push(q);
+            counter++;
+        }
+
+        //console.log("queries.length", queries.length);
+        //console.log("brickHashes.length", brickHashes.length);
+        let results = [];
+        function makeRequests(){
+            let query = queries.shift();
+            //console.log("query", query);
+            $$.remote.doHttpGet(endpoint + "/EDFS/downloadMultipleBricks" + query, function(err, result){
+                if(err){
+                    return callback(err);
+                }
+
+                results.push(result);
+
+                if(queries.length === 0){
+                    return callback(undefined, results.length === 1 ? result : Buffer.concat(results));
+                }else{
+                    return makeRequests();
+                }
+            });
+        }
+
+        makeRequests();
     };
 
     this.getHashForAlias = (alias, callback) => {
