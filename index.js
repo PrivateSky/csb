@@ -1,17 +1,17 @@
-require("./brickTransportStrategies/brickTransportStrategiesRegistry");
 const constants = require("./moduleConstants");
-
-const or = require("overwrite-require");
-const browserContexts = [or.constants.SERVICE_WORKER_ENVIRONMENT_TYPE];
 const cache = require('psk-cache').factory();
-
-if (browserContexts.indexOf($$.environmentType) !== -1) {
-    $$.brickTransportStrategiesRegistry.add("http", require("./brickTransportStrategies/FetchBrickTransportStrategy"));
-} else {
-    $$.brickTransportStrategiesRegistry.add("http", require("./brickTransportStrategies/HTTPBrickTransportStrategy"));
-}
+const BootstrapingService = require("./lib/BootstrapingService").Service;
 
 module.exports = {
+    getHandler(options){
+        options = options || {};
+        options.seedCage = require("./seedCage");
+        if (typeof options.bootstrapingService === "undefined") {
+            options.bootstrapingService = new BootstrapingService(options.endpointsConfiguration);
+        }
+        const keySSIResolver = require("key-ssi-resolver");
+        return keySSIResolver.initialize(options);
+    },
     attachToEndpoint(endpoint) {
         const EDFS = require("./lib/EDFS");
         return new EDFS(endpoint, {
@@ -41,6 +41,6 @@ module.exports = {
     checkForSeedCage(callback) {
         require("./seedCage").check(callback);
     },
-    RawDossier: require('./lib/RawDossier'),
+    RawDossier: require('../dossier/lib/RawDossier'),
     constants: constants
 };
