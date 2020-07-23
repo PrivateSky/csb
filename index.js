@@ -1,15 +1,24 @@
 const constants = require("./moduleConstants");
 const cache = require('psk-cache').factory();
 const BootstrapingService = require("./lib/BootstrapingService").Service;
+const DSUFactory = require("./lib/DSUFactory").Factory;
+const BarMapStrategyFactory = require("bar").BarMapStrategyFactory;
 
 module.exports = {
     getHandler(options){
         options = options || {};
-        options.seedCage = require("./seedCage");
         if (typeof options.bootstrapingService === "undefined") {
             options.bootstrapingService = new BootstrapingService(options.endpointsConfiguration);
         }
         const keySSIResolver = require("key-ssi-resolver");
+        if (typeof options.dsuFactory === "undefined") {
+            options.dsuFactory = new DSUFactory({
+                bootstrapingService: options.bootstrapingService,
+                dlDomain: options.dlDomain,
+                barMapStrategyFactory: new BarMapStrategyFactory(),
+                keySSIFactory: keySSIResolver.KeySSIFactory,
+            })
+        }
         return keySSIResolver.initialize(options);
     },
     attachToEndpoint(endpoint) {
