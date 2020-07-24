@@ -2,7 +2,7 @@ const constants = require("./moduleConstants");
 const cache = require('psk-cache').factory();
 const BootstrapingService = require("./lib/BootstrapingService").Service;
 const DSUFactory = require("./lib/DSUFactory").Factory;
-const BarMapStrategyFactory = require("bar").BarMapStrategyFactory;
+const BrickMapStrategyFactory = require("bar").BrickMapStrategyFactory;
 
 module.exports = {
     getHandler(options){
@@ -15,7 +15,7 @@ module.exports = {
             options.dsuFactory = new DSUFactory({
                 bootstrapingService: options.bootstrapingService,
                 dlDomain: options.dlDomain,
-                barMapStrategyFactory: new BarMapStrategyFactory(),
+                brickMapStrategyFactory: new BrickMapStrategyFactory(),
                 keySSIFactory: keySSIResolver.KeySSIFactory,
             })
         }
