@@ -50,6 +50,5 @@ module.exports = {
     checkForSeedCage(callback) {
         require("./seedCage").check(callback);
     },
-    RawDossier: require('../dossier/lib/RawDossier'),
     constants: constants
 };
