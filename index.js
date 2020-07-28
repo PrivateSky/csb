@@ -1,6 +1,6 @@
 const constants = require("./moduleConstants");
 const cache = require('psk-cache').factory();
-const BootstrapingService = require("./lib/BootstrapingService").Service;
+const BootstrapingService = require("./lib/BootstrapingService");
 const DSUFactory = require("./lib/DSUFactory").Factory;
 const BrickMapStrategyFactory = require("bar").BrickMapStrategyFactory;
 
@@ -8,7 +8,7 @@ module.exports = {
     getHandler(options){
         options = options || {};
         if (typeof options.bootstrapingService === "undefined") {
-            options.bootstrapingService = new BootstrapingService(options.endpointsConfiguration);
+            options.bootstrapingService = new BootstrapingService(options);
         }
         const keySSIResolver = require("key-ssi-resolver");
         if (typeof options.dsuFactory === "undefined") {
@@ -21,6 +21,23 @@ module.exports = {
         }
         return keySSIResolver.initialize(options);
     },
+    /*DSURepresentationsNames :{
+    Bar,
+    SeedDSU,
+    SecureDSU,
+    ImmutableDSU,
+    RedirectDSU,
+    CageDSU,
+    HandlerDSU
+}*/
+    resolveSSI(keySSI, dsuRepresentationName, callback){
+
+    },
+
+    createDSU(dsuRepresentationName, callback){
+
+    },
+
     attachToEndpoint(endpoint) {
         const EDFS = require("./lib/EDFS");
         return new EDFS(endpoint, {
