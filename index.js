@@ -1,26 +1,28 @@
 const constants = require("./moduleConstants");
 const cache = require('psk-cache').factory();
+require("./lib/BDNS");
 const BootstrapingService = require("./lib/BootstrapingService");
 const DSUFactory = require("./lib/DSUFactory").Factory;
 const BrickMapStrategyFactory = require("bar").BrickMapStrategyFactory;
+const KeySSIResolver = require("key-ssi-resolver");
+
+function initializeResolver(options) {
+    options = options || {};
+    if (typeof options.bootstrapingService === "undefined") {
+        options.bootstrapingService = new BootstrapingService(options);
+    }
+    if (typeof options.dsuFactory === "undefined") {
+        options.dsuFactory = new DSUFactory({
+            bootstrapingService: options.bootstrapingService,
+            dlDomain: options.dlDomain,
+            brickMapStrategyFactory: new BrickMapStrategyFactory(),
+            keySSIFactory: KeySSIResolver.KeySSIFactory,
+        })
+    }
+    return KeySSIResolver.initialize(options);
+}
 
 module.exports = {
-    getHandler(options){
-        options = options || {};
-        if (typeof options.bootstrapingService === "undefined") {
-            options.bootstrapingService = new BootstrapingService(options);
-        }
-        const keySSIResolver = require("key-ssi-resolver");
-        if (typeof options.dsuFactory === "undefined") {
-            options.dsuFactory = new DSUFactory({
-                bootstrapingService: options.bootstrapingService,
-                dlDomain: options.dlDomain,
-                brickMapStrategyFactory: new BrickMapStrategyFactory(),
-                keySSIFactory: keySSIResolver.KeySSIFactory,
-            })
-        }
-        return keySSIResolver.initialize(options);
-    },
     /*DSURepresentationsNames :{
     Bar,
     SeedDSU,
@@ -31,11 +33,14 @@ module.exports = {
     HandlerDSU
 }*/
     resolveSSI(keySSI, dsuRepresentationName, callback){
-
+        const keySSIInstance = KeySSIResolver.KeySSIFactory.create(keySSI);
+        const keySSIResolver = initializeResolver($$.BDNS.getConfig(keySSIInstance.getDLDomain()));
+        keySSIResolver.loadDSU(keySSI, dsuRepresentationName, callback);
     },
 
     createDSU(dsuRepresentationName, callback){
-
+        const keySSIResolver = initializeResolver($$.BDNS.getDefaultConfig());
+        keySSIResolver.createDSU(dsuRepresentationName, callback);
     },
 
     attachToEndpoint(endpoint) {
