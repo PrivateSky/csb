@@ -32,15 +32,15 @@ module.exports = {
     CageDSU,
     HandlerDSU
 }*/
-    resolveSSI(keySSI, dsuRepresentationName, callback){
+    resolveSSI(keySSI, dsuRepresentationName, options, callback){
         const keySSIInstance = KeySSIResolver.KeySSIFactory.create(keySSI);
         const keySSIResolver = initializeResolver($$.BDNS.getConfig(keySSIInstance.getDLDomain()));
-        keySSIResolver.loadDSU(keySSI, dsuRepresentationName, callback);
+        keySSIResolver.loadDSU(keySSI, dsuRepresentationName, options, callback);
     },
 
-    createDSU(dsuRepresentationName, callback){
+    createDSU(dsuRepresentationName, options, callback){
         const keySSIResolver = initializeResolver($$.BDNS.getDefaultConfig());
-        keySSIResolver.createDSU(dsuRepresentationName, callback);
+        keySSIResolver.createDSU(dsuRepresentationName, options, callback);
     },
 
     attachToEndpoint(endpoint) {
