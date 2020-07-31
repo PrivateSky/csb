@@ -17,6 +17,7 @@ function initializeResolver(options) {
             dlDomain: options.dlDomain,
             brickMapStrategyFactory: new BrickMapStrategyFactory(),
             keySSIFactory: KeySSIResolver.KeySSIFactory,
+            favouriteEndpoint: options.favouriteEndpoint
         })
     }
     return KeySSIResolver.initialize(options);
@@ -34,7 +35,13 @@ module.exports = {
 }*/
     resolveSSI(keySSI, dsuRepresentationName, options, callback){
         const keySSIInstance = KeySSIResolver.KeySSIFactory.create(keySSI);
-        const keySSIResolver = initializeResolver($$.BDNS.getConfig(keySSIInstance.getDLDomain()));
+        let config;
+        try{
+            config = $$.BDNS.getConfig(keySSIInstance.getDLDomain());
+        }catch (e) {
+            config = {favouriteEndpoint: keySSIInstance.getHint(), dlDomain: 'default'};
+        }
+        const keySSIResolver = initializeResolver(config);
         keySSIResolver.loadDSU(keySSI, dsuRepresentationName, options, callback);
     },
 
