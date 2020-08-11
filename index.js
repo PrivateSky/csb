@@ -34,12 +34,14 @@ module.exports = {
     HandlerDSU
 }*/
     resolveSSI(keySSI, dsuRepresentationName, options, callback){
-        const keySSIInstance = KeySSIResolver.KeySSIFactory.create(keySSI);
         let config;
-        try{
-            config = $$.BDNS.getConfig(keySSIInstance.getDLDomain());
-        }catch (e) {
-            config = {favouriteEndpoint: keySSIInstance.getHint(), dlDomain: 'default'};
+        if (typeof keySSI !== "undefined") {
+            const keySSIInstance = KeySSIResolver.KeySSIFactory.create(keySSI);
+            try{
+                config = $$.BDNS.getConfig(keySSIInstance.getDLDomain());
+            }catch (e) {
+                config = {favouriteEndpoint: keySSIInstance.getHint(), dlDomain: 'default'};
+            }
         }
         const keySSIResolver = initializeResolver(config);
         keySSIResolver.loadDSU(keySSI, dsuRepresentationName, options, callback);
@@ -50,32 +52,6 @@ module.exports = {
         keySSIResolver.createDSU(dsuRepresentationName, options, callback);
     },
 
-    attachToEndpoint(endpoint) {
-        const EDFS = require("./lib/EDFS");
-        return new EDFS(endpoint, {
-            cache
-        });
-    },
-    attachWithSeed(compactSeed, callback) {
-        const SEED = require("bar").Seed;
-        let seed;
-        try {
-            seed = new SEED(compactSeed);
-        } catch (err) {
-            return callback(err);
-        }
-
-        callback(undefined, this.attachToEndpoint(seed.getEndpoint()));
-    },
-    attachWithPassword(password, callback) {
-        require("./seedCage").getSeed(password, (err, seed) => {
-            if (err) {
-                return callback(err);
-            }
-
-            this.attachWithSeed(seed, callback);
-        });
-    },
     checkForSeedCage(callback) {
         require("./seedCage").check(callback);
     },
