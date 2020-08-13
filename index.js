@@ -33,13 +33,13 @@ module.exports = {
     CageDSU,
     HandlerDSU
 }*/
-    resolveSSI(keySSI, dsuRepresentationName, options, callback){
+    resolveSSI(keySSI, dsuRepresentationName, options, callback) {
         let config;
         if (typeof keySSI !== "undefined") {
             const keySSIInstance = KeySSIResolver.KeySSIFactory.create(keySSI);
-            try{
+            try {
                 config = $$.BDNS.getConfig(keySSIInstance.getDLDomain());
-            }catch (e) {
+            } catch (e) {
                 config = {favouriteEndpoint: keySSIInstance.getHint(), dlDomain: 'default'};
             }
         }
@@ -47,9 +47,15 @@ module.exports = {
         keySSIResolver.loadDSU(keySSI, dsuRepresentationName, options, callback);
     },
 
-    createDSU(dsuRepresentationName, options, callback){
-        const keySSIResolver = initializeResolver($$.BDNS.getDefaultConfig());
-        keySSIResolver.createDSU(dsuRepresentationName, options, callback);
+    createDSU(dsuRepresentationName, options, callback) {
+        $$.BDNS.getDefaultConfig((err, config) => {
+            if (err) {
+                return callback(err);
+            }
+
+            const keySSIResolver = initializeResolver(config);
+            keySSIResolver.createDSU(dsuRepresentationName, options, callback);
+        });
     },
 
     checkForSeedCage(callback) {
