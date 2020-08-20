@@ -34,20 +34,30 @@ module.exports = {
     HandlerDSU
 }*/
     resolveSSI(keySSI, dsuRepresentationName, options, callback) {
-        let config;
+        if (typeof options === "function") {
+            callback = options;
+            options = undefined;
+        }
         if (typeof keySSI !== "undefined") {
             const keySSIInstance = KeySSIResolver.KeySSIFactory.create(keySSI);
-            try {
-                config = $$.BDNS.getConfig(keySSIInstance.getDLDomain());
-            } catch (e) {
-                config = {favouriteEndpoint: keySSIInstance.getHint(), dlDomain: 'default'};
-            }
+            return $$.BDNS.getConfig(keySSIInstance.getDLDomain(), (err, config) => {
+                if (err) {
+                    config = {favouriteEndpoint: keySSIInstance.getHint(), dlDomain: 'default'};
+                }
+
+                const keySSIResolver = initializeResolver(config);
+                keySSIResolver.loadDSU(keySSI, dsuRepresentationName, options, callback);
+            });
         }
-        const keySSIResolver = initializeResolver(config);
+        const keySSIResolver = initializeResolver();
         keySSIResolver.loadDSU(keySSI, dsuRepresentationName, options, callback);
     },
 
     createDSU(dsuRepresentationName, options, callback) {
+        if (typeof options === "function") {
+            callback = options;
+            options = undefined;
+        }
         $$.BDNS.getDefaultConfig((err, config) => {
             if (err) {
                 return callback(err);
