@@ -24,15 +24,6 @@ function initializeResolver(options) {
 }
 
 module.exports = {
-    /*DSURepresentationsNames :{
-    Bar,
-    SeedDSU,
-    SecureDSU,
-    ImmutableDSU,
-    RedirectDSU,
-    CageDSU,
-    HandlerDSU
-}*/
     resolveSSI(keySSI, dsuRepresentationName, options, callback) {
         if (typeof options === "function") {
             callback = options;
