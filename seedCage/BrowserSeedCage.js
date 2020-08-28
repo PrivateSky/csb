@@ -47,16 +47,6 @@ function putSeed(seed, pin, overwrite = false, callback) {
         const pskEncryption = crypto.createPskEncryption(algorithm);
         const encKey = crypto.deriveKey(algorithm, pin);
         encSeed = pskEncryption.encrypt(seed, encKey);
-        const encParameters = pskEncryption.getEncryptionParameters();
-        encSeed = Buffer.concat([encSeed, encParameters.iv]);
-        if (encParameters.aad) {
-            encSeed = Buffer.concat([encSeed, encParameters.aad]);
-        }
-
-        if (encParameters.tag) {
-            encSeed = Buffer.concat([encSeed, encParameters.tag]);
-        }
-
         const encryptedArray =  Array.from(encSeed);
         const encryptedSeed = JSON.stringify(encryptedArray);
 
